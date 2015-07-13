@@ -1,7 +1,6 @@
 package com.cnegrisanu.eduapps.moviegenie;
 
 import android.app.Activity;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,12 +47,10 @@ public class PopularMoviesAdapter extends ArrayAdapter<PopularMovies> {
                 .load(popularMovies.poster_path)
                 .noFade()
 //                .resize(250,250)
-
                 .placeholder(R.drawable.ic_photo_black_24dp)
                 .error(R.drawable.ic_broken_image_black_24dp)
                 .into(posterView);
 
         return rootView;
-//        return super.getView(position, convertView, parent);
     }
 }

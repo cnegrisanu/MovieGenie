@@ -95,11 +95,10 @@ public class MovieGridFragment extends Fragment {
                 intent.putExtra("TITLE", movieData.title);
                 intent.putExtra("SUMMARY", movieData.summary);
                 intent.putExtra("POSTER_PATH", movieData.poster_path);
+                intent.putExtra("RELEASE_DATE", movieData.release_date);
+                intent.putExtra("VOTE_AVERAGE", movieData.vote_average);
 
                 startActivity(intent);
-
-//                Toast toast = Toast.makeText(getActivity(), mForecastAdapter.getItem(position), Toast.LENGTH_SHORT);
-//                toast.show();
             }
         });
         return rootView;
@@ -267,6 +266,8 @@ public class MovieGridFragment extends Fragment {
             final String TMDB_ORIGINAL_TITLE = "original_title";
             final String TMDB_SUMMARY = "overview";
             final String TMDB_POSTER_PATH = "poster_path";
+            final String TMDB_RELEASE_DATE = "release_date";
+            final String TMDB_VOTE_AVERAGE = "vote_average";
 
             JSONObject moviesJson = new JSONObject(moviesJsonStr);
             JSONArray moviesArray = moviesJson.getJSONArray(TMDB_RESULTS);
@@ -274,10 +275,12 @@ public class MovieGridFragment extends Fragment {
 
             PopularMovies[] moviesDataArray = new PopularMovies[moviesArray.length()];
             for (int i = 0; i < moviesArray.length(); i++) {
-                // For now, using the format "Day, summary, hi/low"
+
                 String title;
                 String summary;
                 String poster_path;
+                String release_date;
+                String vote_average;
 
                 // Get the JSON object representing the movie
                 JSONObject movie = moviesArray.getJSONObject(i);
@@ -286,9 +289,10 @@ public class MovieGridFragment extends Fragment {
                 title = movie.getString(TMDB_ORIGINAL_TITLE);
                 summary = movie.getString(TMDB_SUMMARY);
                 poster_path = movie.getString(TMDB_POSTER_PATH);
+                release_date = movie.getString(TMDB_RELEASE_DATE);
+                vote_average = movie.getString(TMDB_VOTE_AVERAGE);
 
-// TODO: 7/9/2015  Return all info not just the title. Summary and poster path too
-                moviesDataArray[i] = new PopularMovies(title,summary,poster_path);
+                moviesDataArray[i] = new PopularMovies(title,summary,poster_path,release_date,vote_average);
             }
 
             for (PopularMovies m : moviesDataArray) {

@@ -3,6 +3,8 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="details_summary_label">Plot:</string>
+    <string name="details_release_date_label">Released:</string>
+    <string name="details_vote_average_label">Rating:</string>
 
     <!-->Preferences strings </!-->
     <string name="preference_sort_order_key" translatable="false">sortOrder</string>

@@ -38,6 +38,16 @@ public class DetailActivityFragment extends Fragment {
                 ((TextView) rootView.findViewById(R.id.detailsSummary))
                         .setText(summary);
             }
+            if(intent.hasExtra("VOTE_AVERAGE")) {
+                String vote_average = intent.getStringExtra("VOTE_AVERAGE");
+                ((TextView) rootView.findViewById(R.id.detailsRating))
+                        .setText(vote_average);
+            }
+            if(intent.hasExtra("RELEASE_DATE")) {
+                String release_date = intent.getStringExtra("RELEASE_DATE");
+                ((TextView) rootView.findViewById(R.id.detailsReleaseDate))
+                        .setText(release_date);
+            }
             if(intent.hasExtra("POSTER_PATH")) {
                 String path = intent.getStringExtra("POSTER_PATH");
                 ImageView poster = (ImageView) rootView.findViewById(R.id.detailsPosterView);
