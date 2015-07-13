@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">MovieGenie</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <!-->Preferences strings </!-->
+    <string name="preference_sort_order_key" translatable="false">sortOrder</string>
+    <string name="preference_title">Sort movies</string>
+    <string name="defaultSortValue">Most popular</string>
+    <string name="sortValue1">Highest rated</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <string-array name="sort_types">
+        <item>Highest rated</item>
+        <item>Most popular</item>
+    </string-array>
+
+    <string-array name="sort_types_values">
+        <item>vote_average.desc</item>
+        <item>popularity.desc</item>
+    </string-array>
+    <string name="title_activity_detail">Movie Details</string>
+</resources>
