@@ -1,11 +1,13 @@
 package com.cnegrisanu.eduapps.moviegenie;
 
 import android.app.Activity;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.squareup.picasso.Picasso;
 
@@ -37,11 +39,22 @@ public class PopularMoviesAdapter extends ArrayAdapter<PopularMovies> {
      */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
+        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        ViewHolder holder;
+
+        if(convertView == null) {
+            convertView = inflater.inflate(R.layout.imageview_item, parent, false);
+            holder = new ViewHolder();
+            holder.poster = (ImageView) convertView.findViewById(R.id.poster_imageView);
+            convertView.setTag(holder);
+        }
+        else {
+            holder = (ViewHolder) convertView.getTag();
+        }
+
         PopularMovies popularMovies = getItem(position);
-
-        View rootView = LayoutInflater.from(getContext()).inflate(R.layout.imageview_item, parent, false);
-
-        ImageView posterView = (ImageView) rootView.findViewById(R.id.poster_imageView);
 
         Picasso.with(getContext())
                 .load(popularMovies.poster_path)
@@ -49,8 +62,13 @@ public class PopularMoviesAdapter extends ArrayAdapter<PopularMovies> {
 //                .resize(250,250)
                 .placeholder(R.drawable.ic_photo_black_24dp)
                 .error(R.drawable.ic_broken_image_black_24dp)
-                .into(posterView);
+                .into(holder.poster);
 
-        return rootView;
+        return convertView;
+    }
+
+    static class ViewHolder {
+        ImageView poster;
+        ProgressBar progress;
     }
 }
