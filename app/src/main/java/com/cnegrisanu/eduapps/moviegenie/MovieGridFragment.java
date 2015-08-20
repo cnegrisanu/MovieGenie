@@ -193,7 +193,7 @@ public class MovieGridFragment extends Fragment {
     public class FetchMoviesTask extends AsyncTask<String,Void,PopularMovies[]>{
 
         private final String LOG_TAG = FetchMoviesTask.class.getSimpleName();
-        private final String API_KEY = "554026709f5fd02040f0d9060089835b";
+        private final String API_KEY = "api_key";
 
 
         /**
