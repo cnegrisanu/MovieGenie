@@ -55,6 +55,7 @@ public class MovieGridFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        Log.v(LOG_TAG,"onActivityCreated() Called");
 
     }
 
@@ -87,6 +88,7 @@ public class MovieGridFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        Log.v(LOG_TAG, "onCreate() Called");
     }
 
     public MovieGridFragment() {
@@ -118,8 +120,17 @@ public class MovieGridFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        updateMovies();
+        Log.v(LOG_TAG, "onResume() Called");
+
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.v(LOG_TAG, "onCreateView() Called");
 
         if(savedInstanceState != null && savedInstanceState.containsKey(KEY_MOVIES_LIST)){
             mMoviesList = savedInstanceState.getParcelableArrayList(KEY_MOVIES_LIST);
@@ -168,6 +179,7 @@ public class MovieGridFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        Log.v(LOG_TAG, "onStart() Called");
     }
 
     private void updateMovies() {
@@ -202,6 +214,7 @@ public class MovieGridFragment extends Fragment {
                 for (PopularMovies aMoviesData : moviesData) {
                     mMovieAdapter.add(aMoviesData);
                 }
+//                mMovieAdapter.notifyDataSetChanged();
             }
         }
 
