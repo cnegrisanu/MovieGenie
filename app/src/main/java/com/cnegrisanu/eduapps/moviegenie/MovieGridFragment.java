@@ -122,7 +122,11 @@ public class MovieGridFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        updateMovies();
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String sortOrder = pref.getString(getString(R.string.preference_sort_order_key),getString(R.string.defaultSortValue));
+        Log.v(LOG_TAG, "sortOrder: " + sortOrder);
+        if (mMovieAdapter.isEmpty())
+            updateMovies();
         Log.v(LOG_TAG, "onResume() Called");
 
     }
@@ -193,7 +197,7 @@ public class MovieGridFragment extends Fragment {
     public class FetchMoviesTask extends AsyncTask<String,Void,PopularMovies[]>{
 
         private final String LOG_TAG = FetchMoviesTask.class.getSimpleName();
-        private final String API_KEY = "api_key";
+        private final String API_KEY = "554026709f5fd02040f0d9060089835b";
 
 
         /**

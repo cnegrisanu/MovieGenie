@@ -9,7 +9,7 @@
     <!-->Preferences strings </!-->
     <string name="preference_sort_order_key" translatable="false">sortOrder</string>
     <string name="preference_title">Sort movies</string>
-    <string name="defaultSortValue">Most popular</string>
+    <string name="defaultSortValue">vote_average.desc</string>
     <string name="sortValue1">Highest rated</string>
     <string name="title_activity_settings">Settings</string>
 
