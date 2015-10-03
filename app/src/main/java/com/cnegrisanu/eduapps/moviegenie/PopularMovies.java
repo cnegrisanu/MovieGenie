@@ -13,7 +13,7 @@ public class PopularMovies implements Parcelable{
     String poster_path;
     String release_date;
     String vote_average;
-    Boolean favorite;
+
 
     public PopularMovies(String id, String title, String summary, String poster_path, String release_date, String vote_average, Boolean favorite) {
         this.id = id;
@@ -22,7 +22,6 @@ public class PopularMovies implements Parcelable{
         this.poster_path = "http://image.tmdb.org/t/p/w342/" + poster_path;
         this.release_date = release_date;
         this.vote_average = vote_average;
-        this.favorite = favorite;
     }
 
     protected PopularMovies(Parcel in) {
@@ -32,7 +31,6 @@ public class PopularMovies implements Parcelable{
         poster_path = in.readString();
         release_date = in.readString();
         vote_average = in.readString();
-        favorite = (in.readInt() == 0) ? false : true;
     }
 
     public static final Creator<PopularMovies> CREATOR = new Creator<PopularMovies>() {
@@ -74,6 +72,5 @@ public class PopularMovies implements Parcelable{
         dest.writeString(poster_path);
         dest.writeString(release_date);
         dest.writeString(vote_average);
-        dest.writeInt(favorite ? 1 : 0);
     }
 }

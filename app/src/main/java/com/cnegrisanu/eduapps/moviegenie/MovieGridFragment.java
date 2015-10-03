@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -163,13 +164,19 @@ public class MovieGridFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 PopularMovies movieData = mMovieAdapter.getItem(position);
                 Intent intent = new Intent(getActivity(), DetailActivity.class);
-                intent.putExtra("ID",movieData.id);
-                intent.putExtra("TITLE", movieData.title);
-                intent.putExtra("SUMMARY", movieData.summary);
-                intent.putExtra("POSTER_PATH", movieData.poster_path);
-                intent.putExtra("RELEASE_DATE", movieData.release_date);
-                intent.putExtra("VOTE_AVERAGE", movieData.vote_average);
-                intent.putExtra("FAVORITE",movieData.favorite);
+                Bundle movieDetail = new Bundle();
+                movieDetail.putParcelable("movieDetails", movieData);
+
+                intent.putExtra("movieDetailsBundle", movieDetail);
+
+
+//                intent.putExtra("ID", movieData.id);
+//                intent.putExtra("TITLE", movieData.title);
+//                intent.putExtra("SUMMARY", movieData.summary);
+//                intent.putExtra("POSTER_PATH", movieData.poster_path);
+//                intent.putExtra("RELEASE_DATE", movieData.release_date);
+//                intent.putExtra("VOTE_AVERAGE", movieData.vote_average);
+//                intent.putExtra("FAVORITE",movieData.favorite);
 
                 startActivity(intent);
             }
