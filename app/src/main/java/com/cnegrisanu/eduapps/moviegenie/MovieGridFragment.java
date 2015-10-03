@@ -115,17 +115,17 @@ public class MovieGridFragment extends Fragment {
 
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String sortOrder = pref.getString(getString(R.string.preference_sort_order_key),"");
-        Log.v(LOG_TAG, "sortOrder Before: " + sortOrder);
-        Log.v(LOG_TAG, "sSortOrder Before: " + sSortOrder);
+//        Log.v(LOG_TAG, "sortOrder Before: " + sortOrder);
+//        Log.v(LOG_TAG, "sSortOrder Before: " + sSortOrder);
         if (mMovieAdapter.isEmpty() || !(sSortOrder.equalsIgnoreCase(sortOrder))) {
-            Log.v(LOG_TAG, "mMovieAdapter.isEmpty(): " + mMovieAdapter.isEmpty());
-            Log.v(LOG_TAG, "sSortOrder.equalsIgnoreCase(sortOrder): " + sSortOrder.equalsIgnoreCase(sortOrder));
+//            Log.v(LOG_TAG, "mMovieAdapter.isEmpty(): " + mMovieAdapter.isEmpty());
+//            Log.v(LOG_TAG, "sSortOrder.equalsIgnoreCase(sortOrder): " + sSortOrder.equalsIgnoreCase(sortOrder));
             updateMovies();
             sSortOrder = sortOrder;
-            Log.v(LOG_TAG, "MOVIES LIST UPDATED!!!");
-
-            Log.v(LOG_TAG, "sSortOrder: " + sSortOrder);
-            Log.v(LOG_TAG, "sortOrder: " + sortOrder);
+//            Log.v(LOG_TAG, "MOVIES LIST UPDATED!!!");
+//
+//            Log.v(LOG_TAG, "sSortOrder: " + sSortOrder);
+//            Log.v(LOG_TAG, "sortOrder: " + sortOrder);
         }
 
 
@@ -163,11 +163,13 @@ public class MovieGridFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 PopularMovies movieData = mMovieAdapter.getItem(position);
                 Intent intent = new Intent(getActivity(), DetailActivity.class);
+                intent.putExtra("ID",movieData.id);
                 intent.putExtra("TITLE", movieData.title);
                 intent.putExtra("SUMMARY", movieData.summary);
                 intent.putExtra("POSTER_PATH", movieData.poster_path);
                 intent.putExtra("RELEASE_DATE", movieData.release_date);
                 intent.putExtra("VOTE_AVERAGE", movieData.vote_average);
+                intent.putExtra("FAVORITE",movieData.favorite);
 
                 startActivity(intent);
             }

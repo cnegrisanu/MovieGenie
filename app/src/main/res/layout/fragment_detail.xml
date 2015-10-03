@@ -39,6 +39,7 @@
                     android:textSize="@dimen/abc_text_size_medium_material"
                     android:paddingBottom="10dp"
                     android:textStyle="bold" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -58,11 +59,13 @@
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/abc_text_size_small_material" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingTop="5dp">
+                    android:paddingTop="5dp"
+                    android:padding="5dp">
                     <TextView
                         android:id="@+id/detailsRatingLabel"
                         android:layout_width="wrap_content"
@@ -77,6 +80,15 @@
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/abc_text_size_small_material" />
                 </LinearLayout>
+
+                <ToggleButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/favorite_off"
+                    android:id="@+id/favoriteToggle"
+                    android:textOff="@string/favorite_off"
+                    android:textOn="@string/favorite_on" />
+
             </LinearLayout>
 
         </LinearLayout>

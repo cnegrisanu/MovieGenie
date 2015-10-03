@@ -1,7 +1,9 @@
 package com.cnegrisanu.eduapps.moviegenie;
 
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -163,12 +165,17 @@ public class FetchMoviesTask extends AsyncTask<String, Void, PopularMovies[]> {
     private PopularMovies[] getMovieDataFromJson(String moviesJsonStr) throws JSONException {
 
         // These are the names of the JSON objects that need to be extracted.
+        final String TMDB_MOVIE_ID = "id";
         final String TMDB_RESULTS = "results";
         final String TMDB_ORIGINAL_TITLE = "original_title";
         final String TMDB_SUMMARY = "overview";
         final String TMDB_POSTER_PATH = "poster_path";
         final String TMDB_RELEASE_DATE = "release_date";
         final String TMDB_VOTE_AVERAGE = "vote_average";
+        final String TMDB_FAVORITE = "favorite";
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(movieGridFragment.getActivity());
+
 
         JSONObject moviesJson = new JSONObject(moviesJsonStr);
         JSONArray moviesArray = moviesJson.getJSONArray(TMDB_RESULTS);
@@ -177,23 +184,26 @@ public class FetchMoviesTask extends AsyncTask<String, Void, PopularMovies[]> {
         PopularMovies[] moviesDataArray = new PopularMovies[moviesArray.length()];
         for (int i = 0; i < moviesArray.length(); i++) {
 
+            String id;
             String title;
             String summary;
             String poster_path;
             String release_date;
             String vote_average;
+            Boolean favorite;
 
             // Get the JSON object representing the movie
             JSONObject movie = moviesArray.getJSONObject(i);
 
-            // summary is in a child array called "weather", which is 1 element long.
+            id = movie.getString(TMDB_MOVIE_ID);
             title = movie.getString(TMDB_ORIGINAL_TITLE);
             summary = movie.getString(TMDB_SUMMARY);
             poster_path = movie.getString(TMDB_POSTER_PATH);
             release_date = movie.getString(TMDB_RELEASE_DATE);
             vote_average = movie.getString(TMDB_VOTE_AVERAGE);
+            favorite = prefs.getBoolean(id,false);
 
-            moviesDataArray[i] = new PopularMovies(title, summary, poster_path, release_date, vote_average);
+            moviesDataArray[i] = new PopularMovies(id,title, summary, poster_path, release_date, vote_average,favorite);
         }
 
 //            for (PopularMovies m : moviesDataArray) {
