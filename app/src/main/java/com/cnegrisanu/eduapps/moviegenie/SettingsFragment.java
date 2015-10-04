@@ -1,15 +1,20 @@
 package com.cnegrisanu.eduapps.moviegenie;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.widget.Toast;
 
 /**
  * Created by Cristian on 7/12/2015.
  */
 public class SettingsFragment extends PreferenceFragment implements Preference.OnPreferenceChangeListener {
+
+    private static final String PREFERENCE_TYPE = "favorites";
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +54,13 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
      */
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
+        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(getActivity(),PREFERENCE_TYPE, Context.MODE_PRIVATE);
         String stringValue = newValue.toString();
+
+        if(stringValue.equalsIgnoreCase(PREFERENCE_TYPE) && complexPreferences.getAll().size() == 0) {
+            Toast.makeText(this.getActivity(),R.string.toast_alert_no_favorites,Toast.LENGTH_LONG).show();
+            return false;
+        }
 
         if (preference instanceof ListPreference) {
             // For list preferences, look up the correct display value in

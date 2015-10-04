@@ -5,6 +5,9 @@
     <string name="details_summary_label">Plot:</string>
     <string name="details_release_date_label">Released:</string>
     <string name="details_vote_average_label">Rating:</string>
+    <string name="title_activity_detail">Movie Details</string>
+    <string name="favorite_off">Mark as favorite</string>
+    <string name="favorite_on">FAVORITE</string>
 
     <!-->Preferences strings </!-->
     <string name="preference_sort_order_key" translatable="false">sortOrder</string>
@@ -12,6 +15,7 @@
     <string name="defaultSortValue">popularity.desc</string>
     <string name="sortValue1">Highest rated</string>
     <string name="title_activity_settings">Settings</string>
+
 
     <string-array name="sort_types">
         <item>Highest rated</item>
@@ -24,7 +28,9 @@
         <item>popularity.desc</item>
         <item>favorites</item>
     </string-array>
-    <string name="title_activity_detail">Movie Details</string>
-    <string name="favorite_off">Mark as favorite</string>
-    <string name="favorite_on">FAVORITE</string>
+
+    <!-->Toast strings </!-->
+    <string name="toast_alert_no_favorites">No favorite movies selected!</string>
+    <string name="reviews_trailers_label">TRAILERS AND REVIEWS</string>
+
 </resources>

@@ -1,6 +1,7 @@
 package com.cnegrisanu.eduapps.moviegenie;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,7 +15,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -116,17 +120,10 @@ public class MovieGridFragment extends Fragment {
 
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String sortOrder = pref.getString(getString(R.string.preference_sort_order_key),"");
-//        Log.v(LOG_TAG, "sortOrder Before: " + sortOrder);
-//        Log.v(LOG_TAG, "sSortOrder Before: " + sSortOrder);
-        if (mMovieAdapter.isEmpty() || !(sSortOrder.equalsIgnoreCase(sortOrder))) {
-//            Log.v(LOG_TAG, "mMovieAdapter.isEmpty(): " + mMovieAdapter.isEmpty());
-//            Log.v(LOG_TAG, "sSortOrder.equalsIgnoreCase(sortOrder): " + sSortOrder.equalsIgnoreCase(sortOrder));
+
+        if (mMovieAdapter.isEmpty() || !(sSortOrder.equalsIgnoreCase(sortOrder)) || sortOrder.equalsIgnoreCase("favorites")) {
             updateMovies();
             sSortOrder = sortOrder;
-//            Log.v(LOG_TAG, "MOVIES LIST UPDATED!!!");
-//
-//            Log.v(LOG_TAG, "sSortOrder: " + sSortOrder);
-//            Log.v(LOG_TAG, "sortOrder: " + sortOrder);
         }
 
 
@@ -199,7 +196,33 @@ public class MovieGridFragment extends Fragment {
         FetchMoviesTask moviesTask = new FetchMoviesTask(this);
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String sortOrder = pref.getString(getString(R.string.preference_sort_order_key),getString(R.string.defaultSortValue));
-        moviesTask.execute(sortOrder);
+
+        if(sortOrder.equalsIgnoreCase("favorites")) {
+            if(this.getFavorites().size() != 0) {
+                mMovieAdapter.clear();
+                mMovieAdapter.addAll(this.getFavorites());
+            } else {
+                pref.edit().putString(getString(R.string.preference_sort_order_key),getString(R.string.defaultSortValue));
+                pref.edit().apply();
+                moviesTask.execute(getString(R.string.defaultSortValue));
+            }
+        } else {
+            moviesTask.execute(sortOrder);
+        }
         Log.v(LOG_TAG,"updateMovies method called");
+    }
+
+    private ArrayList<PopularMovies> getFavorites(){
+        Gson GSON = new Gson();
+        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(getActivity(),"favorites", Context.MODE_PRIVATE);
+        Map<String,?> favoriteMoviesList  = complexPreferences.getAll();
+
+        ArrayList<PopularMovies> list = new ArrayList<>();
+        String json = "";
+        for(Map.Entry<String,?> key : favoriteMoviesList.entrySet()) {
+            json = (String)key.getValue();
+            list.add(GSON.fromJson(json,PopularMovies.class));
+        }
+        return list;
     }
 }

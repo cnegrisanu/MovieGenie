@@ -69,6 +69,5 @@ public class PopularMoviesAdapter extends ArrayAdapter<PopularMovies> {
 
     static class ViewHolder {
         ImageView poster;
-        ProgressBar progress;
     }
 }
