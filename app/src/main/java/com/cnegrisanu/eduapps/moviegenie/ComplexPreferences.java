@@ -16,6 +16,8 @@ limitations under the License.
 * */
 import android.content.Context;
 import java.lang.reflect.Type;
+import java.util.Map;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -62,6 +64,10 @@ public class ComplexPreferences {
         }
 
         editor.putString(key, GSON.toJson(object));
+    }
+
+    public Map<String,?> getAll() {
+        return preferences.getAll();
     }
 
     public void remove(String key) {

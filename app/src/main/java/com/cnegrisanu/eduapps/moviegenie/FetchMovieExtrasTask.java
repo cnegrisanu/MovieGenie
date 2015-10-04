@@ -16,20 +16,23 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Map;
 
 /**
- * Created by vollulin on 9/27/2015.
+ * Created by vollulin on 10/4/2015.
  */
-public class FetchMoviesTask extends AsyncTask<String, Void, PopularMovies[]> {
+public class FetchMovieExtrasTask extends AsyncTask<String,Void,ArrayList<MovieExtras>> {
 
-    private MovieGridFragment movieGridFragment;
-    private final String LOG_TAG = FetchMoviesTask.class.getSimpleName();
+    private DetailActivityFragment movieDetailsFragment;
+    private final String LOG_TAG = FetchMovieExtrasTask.class.getSimpleName();
     private final String API_KEY = "my_apy_key"; //removed per instructions in the guide
+    private final String MOVIE_EXTRAS = "append_to_response";
+    private final String REVIEWS_AND_TRAILERS = "trailers,reviews";
 
-    public FetchMoviesTask(MovieGridFragment movieGridFragment) {
-        this.movieGridFragment = movieGridFragment;
+    public FetchMovieExtrasTask(DetailActivityFragment movieDetailsFragment) {
+        this.movieDetailsFragment = movieDetailsFragment;
     }
-
 
     /**
      * <p>Runs on the UI thread after {@link #doInBackground}. The
@@ -37,21 +40,20 @@ public class FetchMoviesTask extends AsyncTask<String, Void, PopularMovies[]> {
      * <p/>
      * <p>This method won't be invoked if the task was cancelled.</p>
      *
-     * @param moviesData The result of the operation computed by {@link #doInBackground}.
+     * @param movieExtras The result of the operation computed by {@link #doInBackground}.
      * @see #onPreExecute
      * @see #doInBackground
      * @see #onCancelled(Object)
      */
     @Override
-    protected void onPostExecute(PopularMovies[] moviesData) {
-        if (moviesData != null) {
-            movieGridFragment.mMovieAdapter.clear();
-            for (PopularMovies aMoviesData : moviesData) {
-                movieGridFragment.mMovieAdapter.add(aMoviesData);
+    protected void onPostExecute(ArrayList<MovieExtras> movieExtras) {
+        if (movieExtras != null) {
+            movieDetailsFragment.mMovieExtrasAdapter.clear();
+            for(MovieExtras aMovieExtras : movieExtras) {
+                movieDetailsFragment.mMovieExtrasAdapter.add(aMovieExtras);
             }
         }
     }
-
     /**
      * Override this method to perform a computation on a background thread. The
      * specified parameters are the parameters passed to {@link #execute}
@@ -67,7 +69,7 @@ public class FetchMoviesTask extends AsyncTask<String, Void, PopularMovies[]> {
      * @see #publishProgress
      */
     @Override
-    protected PopularMovies[] doInBackground(String... params) {
+    protected ArrayList<MovieExtras> doInBackground(String... params) {
 
         // If there's no parameter, there's nothing to look up.  Verify size of params.
         if (params.length == 0) {
@@ -80,30 +82,28 @@ public class FetchMoviesTask extends AsyncTask<String, Void, PopularMovies[]> {
         BufferedReader reader = null;
 
         // Will contain the raw JSON response as a string.
-        String movieJsonStr = null;
+        String movieExtrasJsonStr = null;
 
 
         try {
-            // Construct the URL for the OpenWeatherMap query
-            // Possible parameters are available at OWM's forecast API page, at
-            // http://openweathermap.org/API#forecast
+            // Construct the URL for the theMovieDb.org query
+            // Possible parameters are available at TMDB's API page, at
+            // https://www.themoviedb.org/documentation/api/discover
             final String TMDB_BASE_URL =
-                    "https://api.themoviedb.org/3/discover/movie?";
-            final String SORT_PARAM = "sort_by";
-            final String COUNTRY = "certification_country";
+                    "https://api.themoviedb.org/3/movie?";
             final String KEY = "api_key";
 
             Uri builtUri = Uri.parse(TMDB_BASE_URL).buildUpon()
-                    .appendQueryParameter(SORT_PARAM, params[0])
-                    .appendQueryParameter(COUNTRY, "US")
+                    .appendPath(params[0])
                     .appendQueryParameter(KEY, API_KEY)
+                    .appendQueryParameter(MOVIE_EXTRAS, REVIEWS_AND_TRAILERS)
                     .build();
 
             URL url = new URL(builtUri.toString());
 
 //                Log.v(LOG_TAG, "Built URI " + builtUri.toString());
 
-            // Create the request to OpenWeatherMap, and open the connection
+            // Create the request to TMDB, and open the connection
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");
             urlConnection.connect();
@@ -129,7 +129,7 @@ public class FetchMoviesTask extends AsyncTask<String, Void, PopularMovies[]> {
                 // Stream was empty.  No point in parsing.
                 return null;
             }
-            movieJsonStr = buffer.toString();
+            movieExtrasJsonStr = buffer.toString();
 
 //                Log.v(LOG_TAG, "Movie string: " + movieJsonStr);
         } catch (IOException e) {
@@ -151,7 +151,7 @@ public class FetchMoviesTask extends AsyncTask<String, Void, PopularMovies[]> {
         }
 
         try {
-            return getMovieDataFromJson(movieJsonStr);
+            return getMovieExtrasFromJson(movieExtrasJsonStr);
         } catch (JSONException e) {
             Log.e(LOG_TAG, e.getMessage(), e);
             e.printStackTrace();
@@ -161,53 +161,65 @@ public class FetchMoviesTask extends AsyncTask<String, Void, PopularMovies[]> {
         return null;
     }
 
-    private PopularMovies[] getMovieDataFromJson(String moviesJsonStr) throws JSONException {
+
+    private ArrayList<MovieExtras> getMovieExtrasFromJson(String moviesExtrasJsonStr) throws JSONException {
 
         // These are the names of the JSON objects that need to be extracted.
         final String TMDB_MOVIE_ID = "id";
         final String TMDB_RESULTS = "results";
-        final String TMDB_ORIGINAL_TITLE = "original_title";
-        final String TMDB_SUMMARY = "overview";
-        final String TMDB_POSTER_PATH = "poster_path";
-        final String TMDB_RELEASE_DATE = "release_date";
-        final String TMDB_VOTE_AVERAGE = "vote_average";
-        final String TMDB_FAVORITE = "favorite";
-
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(movieGridFragment.getActivity());
-
-
-        JSONObject moviesJson = new JSONObject(moviesJsonStr);
-        JSONArray moviesArray = moviesJson.getJSONArray(TMDB_RESULTS);
+        final String TMDB_MOVIE_TRAILERS = "trailers";
+        final String TMDB_MOVIE_YOUTUBE_TRAILERS = "youtube";
+        final String TMDB_MOVIE_REVIEWS = "reviews";
+        final String TMDB_VIDEO_NAME = "name";
+        final String TMDB_VIDEO_SOURCE = "source";
+        final String TMDB_REVIEW_AUTHOR = "author";
+        final String TMDB_REVIEW_CONTENT = "content";
 
 
-        PopularMovies[] moviesDataArray = new PopularMovies[moviesArray.length()];
-        for (int i = 0; i < moviesArray.length(); i++) {
+//        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(movieGridFragment.getActivity());
 
-            String id;
-            String title;
-            String summary;
-            String poster_path;
-            String release_date;
-            String vote_average;
-            Boolean favorite;
+
+        JSONObject moviesExtrasJson = new JSONObject(moviesExtrasJsonStr);
+        JSONArray movieTrailersArray = moviesExtrasJson.getJSONObject(TMDB_MOVIE_TRAILERS).getJSONArray(TMDB_MOVIE_YOUTUBE_TRAILERS);
+        JSONArray movieReviewsArray = moviesExtrasJson.getJSONObject(TMDB_MOVIE_REVIEWS).getJSONArray(TMDB_RESULTS);
+
+
+//        MovieExtras[] moviesDataArray = new MovieExtras[movieTrailersArray.length() + movieReviewsArray.length()];
+        ArrayList<MovieExtras> mDA = new ArrayList<MovieExtras>();
+
+        for (int i = 0; i < movieTrailersArray.length(); i++) {
+
+            String name;
+            String source;
 
             // Get the JSON object representing the movie
-            JSONObject movie = moviesArray.getJSONObject(i);
+            JSONObject movieTrailers = movieTrailersArray.getJSONObject(i);
 
-            id = movie.getString(TMDB_MOVIE_ID);
-            title = movie.getString(TMDB_ORIGINAL_TITLE);
-            summary = movie.getString(TMDB_SUMMARY);
-            poster_path = movie.getString(TMDB_POSTER_PATH);
-            release_date = movie.getString(TMDB_RELEASE_DATE);
-            vote_average = movie.getString(TMDB_VOTE_AVERAGE);
-            favorite = prefs.getBoolean(id,false);
+            name = movieTrailers.getString(TMDB_VIDEO_NAME);
+            source = movieTrailers.getString(TMDB_VIDEO_SOURCE);
 
-            moviesDataArray[i] = new PopularMovies(id,title, summary, poster_path, release_date, vote_average,favorite);
+
+//            moviesDataArray[i] = new MovieExtras("trailer",source,name);
+            mDA.add(new MovieExtras("trailer",source,name));
+        }
+        for (int i = 0; i < movieReviewsArray.length(); i++) {
+
+            String author;
+            String content;
+
+            // Get the JSON object representing the movie
+            JSONObject movieReviews = movieReviewsArray.getJSONObject(i);
+
+            author = movieReviews.getString(TMDB_REVIEW_AUTHOR);
+            content = movieReviews.getString(TMDB_REVIEW_CONTENT);
+
+
+            mDA.add(new MovieExtras("review",author,content));
         }
 
 //            for (PopularMovies m : moviesDataArray) {
 //                Log.v(LOG_TAG, "Movie entry: " + s);
 //            }
-        return moviesDataArray;
+        return mDA;
     }
 }
