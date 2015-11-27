@@ -15,5 +15,6 @@
         android:horizontalSpacing="@dimen/gridview_horizontalSpacing"
         android:verticalSpacing="@dimen/gridview_verticalSpacing"
         android:numColumns="auto_fit"
+        android:choiceMode="singleChoice"
         android:columnWidth="@dimen/my_thumbnail_width" />
 </FrameLayout>
