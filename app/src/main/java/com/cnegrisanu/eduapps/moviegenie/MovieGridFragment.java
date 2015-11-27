@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
@@ -152,19 +153,24 @@ public class MovieGridFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         // Get a reference to the ListView, and attach this adapter to it.
-        final GridView listView = (GridView) rootView.findViewById(R.id.movies_gridView);
-        listView.setAdapter(mMovieAdapter);
+        final GridView gridView = (GridView) rootView.findViewById(R.id.movies_gridView);
+        gridView.setAdapter(mMovieAdapter);
 
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 PopularMovies movieData = mMovieAdapter.getItem(position);
-                Intent intent = new Intent(getActivity(), DetailActivity.class);
-                Bundle movieDetail = new Bundle();
-                movieDetail.putParcelable("movieDetails", movieData);
 
-                intent.putExtra("movieDetailsBundle", movieDetail);
+                if (movieData != null) {
+                    ((Callback) getActivity()).onItemSelected(movieData);
+                }
+
+//                Intent intent = new Intent(getActivity(), DetailActivity.class);
+//                Bundle movieDetail = new Bundle();
+//                movieDetail.putParcelable("movieDetails", movieData);
+//
+//                intent.putExtra("movieDetailsBundle", movieDetail);
 
 
 //                intent.putExtra("ID", movieData.id);
@@ -175,7 +181,7 @@ public class MovieGridFragment extends Fragment {
 //                intent.putExtra("VOTE_AVERAGE", movieData.vote_average);
 //                intent.putExtra("FAVORITE",movieData.favorite);
 
-                startActivity(intent);
+//                startActivity(intent);
             }
         });
         return rootView;
@@ -224,5 +230,17 @@ public class MovieGridFragment extends Fragment {
             list.add(GSON.fromJson(json,PopularMovies.class));
         }
         return list;
+    }
+
+    /**
+     * A callback interface that all activities containing this fragment must
+     * implement. This mechanism allows activities to be notified of item
+     * selections.
+     */
+    public interface Callback {
+        /**
+         * DetailFragmentCallback for when an item has been selected.
+         */
+        public void onItemSelected(PopularMovies movie);
     }
 }

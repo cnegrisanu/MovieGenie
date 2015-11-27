@@ -7,13 +7,30 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MovieGridFragment.Callback{
+
+    private final String LOG_TAG = MainActivity.class.getSimpleName();
+    private static final String DETAILFRAGMENT_TAG = "DFTAG";
+
+    private boolean mTwoPane;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         PreferenceManager.setDefaultValues(this,R.xml.preferences,false);
+
+        if (findViewById(R.id.fragment_details_container) != null) {
+            mTwoPane = true;
+
+            if(savedInstanceState == null){
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_details_container,new DetailActivityFragment(), DETAILFRAGMENT_TAG)
+                        .commit();
+            }
+        } else {
+            mTwoPane = false;
+        }
     }
 
 
@@ -38,5 +55,27 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemSelected(PopularMovies content) {
+
+        Bundle args = new Bundle();
+        args.putParcelable(DetailActivityFragment.MOVIE_DETAILS,content);
+
+        if(mTwoPane){
+
+            DetailActivityFragment fragment = new DetailActivityFragment();
+            fragment.setArguments(args);
+
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_details_container,fragment,DETAILFRAGMENT_TAG)
+                    .commit();
+
+        } else {
+            Intent intent = new Intent(this,DetailActivity.class)
+                    .putExtra(DetailActivityFragment.MOVIE_DETAILS_DATA,args);
+            startActivity(intent);
+        }
     }
 }

@@ -31,7 +31,11 @@ import java.util.logging.Logger;
 public class DetailActivityFragment extends Fragment {
 
 
-//    PopularMovies currentMovie = new PopularMovies()
+    //    PopularMovies currentMovie = new PopularMovies()
+    private static final String LOG_TAG = DetailActivityFragment.class.getSimpleName();
+    static final String MOVIE_DETAILS = "movieDetails";
+    static final String MOVIE_DETAILS_DATA = "movieDetailsBundle";
+
     String id = "";
     PopularMovies movie;
     protected MovieExtrasAdapter mMovieExtrasAdapter;
@@ -46,86 +50,58 @@ public class DetailActivityFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
         final ToggleButton favoriteToggle = (ToggleButton) rootView.findViewById(R.id.favoriteToggle);
-        final ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(getActivity(),"favorites", Context.MODE_PRIVATE);
+        final ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(getActivity(), "favorites", Context.MODE_PRIVATE);
 
-        ListView movieExtrasView = (ListView)rootView.findViewById(R.id.movie_extras_view);
+        ListView movieExtrasView = (ListView) rootView.findViewById(R.id.movie_extras_view);
 
-        // The detail Activity called via intent.  Inspect the intent for forecast data.
-        Intent intent = getActivity().getIntent();
+        Bundle mBundle = new Bundle();
+        if (this.getArguments() != null) {
+            mBundle = this.getArguments();
+        } else {
 
-        if (intent != null) {
-            if (intent.hasExtra("movieDetailsBundle")) {
-                Bundle mBundle = intent.getBundleExtra("movieDetailsBundle");
-                movie = mBundle.getParcelable("movieDetails");
+            // The detail Activity called via intent.  Inspect the intent for forecast data.
+            Intent intent = getActivity().getIntent();
 
-                if (movie != null) {
-                    ((TextView) rootView.findViewById(R.id.detailsTitleText))
-                            .setText(movie.title);
-                    ((TextView) rootView.findViewById(R.id.detailsSummary))
-                            .setText(movie.summary);
-                    ((TextView) rootView.findViewById(R.id.detailsRating))
-                            .setText(movie.vote_average);
-                    ((TextView) rootView.findViewById(R.id.detailsReleaseDate))
-                            .setText(movie.release_date);
+            if (intent != null && intent.hasExtra(MOVIE_DETAILS_DATA)) {
+                mBundle = intent.getBundleExtra(MOVIE_DETAILS_DATA);
+            }
+        }
+        movie = mBundle.getParcelable(MOVIE_DETAILS);
+
+        if (movie != null) {
+            ((TextView) rootView.findViewById(R.id.detailsTitleText))
+                    .setText(movie.title);
+            ((TextView) rootView.findViewById(R.id.detailsSummary))
+                    .setText(movie.summary);
+            ((TextView) rootView.findViewById(R.id.detailsRating))
+                    .setText(movie.vote_average);
+            ((TextView) rootView.findViewById(R.id.detailsReleaseDate))
+                    .setText(movie.release_date);
 
 
-                    ImageView poster = (ImageView) rootView.findViewById(R.id.detailsPosterView);
-                    Picasso.with(getActivity()).load(movie.poster_path)
-                            .placeholder(R.drawable.ic_photo_black_24dp)
-                            .error(R.drawable.ic_broken_image_black_24dp)
-                            .into(poster);
-                }
-                if(complexPreferences.getObject(movie.id,PopularMovies.class) != null) {
-                    favoriteToggle.setChecked(true);
-                } else {
-                    favoriteToggle.setChecked(false);
-                }
+            ImageView poster = (ImageView) rootView.findViewById(R.id.detailsPosterView);
+            Picasso.with(getActivity()).load(movie.poster_path)
+                    .placeholder(R.drawable.ic_photo_black_24dp)
+                    .error(R.drawable.ic_broken_image_black_24dp)
+                    .into(poster);
+
+            if (complexPreferences.getObject(movie.id, PopularMovies.class) != null) {
+                favoriteToggle.setChecked(true);
+            } else {
+                favoriteToggle.setChecked(false);
             }
 
-//            if(intent.hasExtra("TITLE")) {
-//                String title = intent.getStringExtra("TITLE");
-//                ((TextView) rootView.findViewById(R.id.detailsTitleText))
-//                        .setText(title);
-//            }
-//            if(intent.hasExtra("SUMMARY")) {
-//                String summary = intent.getStringExtra("SUMMARY");
-//                ((TextView) rootView.findViewById(R.id.detailsSummary))
-//                        .setText(summary);
-//            }
-//            if(intent.hasExtra("VOTE_AVERAGE")) {
-//                String vote_average = intent.getStringExtra("VOTE_AVERAGE");
-//                ((TextView) rootView.findViewById(R.id.detailsRating))
-//                        .setText(vote_average);
-//            }
-//            if(intent.hasExtra("RELEASE_DATE")) {
-//                String release_date = intent.getStringExtra("RELEASE_DATE");
-//                ((TextView) rootView.findViewById(R.id.detailsReleaseDate))
-//                        .setText(release_date);
-//            }
-//            if(intent.hasExtra("ID")) {
-//                id = intent.getStringExtra("ID");
-//                Boolean favorite = prefs.contains(id);
-//                favoriteToggle.setChecked(favorite);
-//
-//            }
-//            if(intent.hasExtra("POSTER_PATH")) {
-//                String path = intent.getStringExtra("POSTER_PATH");
-//                ImageView poster = (ImageView) rootView.findViewById(R.id.detailsPosterView);
-//                Picasso.with(getActivity()).load(path)
-//                        .placeholder(R.drawable.ic_photo_black_24dp)
-//                        .error(R.drawable.ic_broken_image_black_24dp)
-//                        .into(poster);
-//            }
 
             FetchMovieExtrasTask extrasTask = new FetchMovieExtrasTask(this);
             extrasTask.execute(movie.id);
-
-            mMovieExtrasList = new ArrayList<MovieExtras>();
-            mMovieExtrasAdapter = new MovieExtrasAdapter(getActivity(),mMovieExtrasList);
-
-            mMovieExtrasAdapter.addAll(mMovieExtrasList);
-
         }
+
+        mMovieExtrasList = new ArrayList<MovieExtras>();
+        mMovieExtrasAdapter = new MovieExtrasAdapter(getActivity(), mMovieExtrasList);
+
+        mMovieExtrasAdapter.addAll(mMovieExtrasList);
+
+
         movieExtrasView.setAdapter(mMovieExtrasAdapter);
 
         movieExtrasView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

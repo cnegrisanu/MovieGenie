@@ -26,7 +26,7 @@ public class FetchMovieExtrasTask extends AsyncTask<String,Void,ArrayList<MovieE
 
     private DetailActivityFragment movieDetailsFragment;
     private final String LOG_TAG = FetchMovieExtrasTask.class.getSimpleName();
-    private final String API_KEY = "my_apy_key"; //removed per instructions in the guide
+    private final String API_KEY = "554026709f5fd02040f0d9060089835b"; //removed per instructions in the guide
     private final String MOVIE_EXTRAS = "append_to_response";
     private final String REVIEWS_AND_TRAILERS = "trailers,reviews";
 

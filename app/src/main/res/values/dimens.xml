@@ -3,4 +3,8 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="my_thumbnail_width">150dp</dimen>
+    <dimen name="gridview_horizontalSpacing">10dp</dimen>
+    <dimen name="gridview_verticalSpacing">10dp</dimen>
+    <dimen name="gridview_allaround_padding">16dp</dimen>
+
 </resources>

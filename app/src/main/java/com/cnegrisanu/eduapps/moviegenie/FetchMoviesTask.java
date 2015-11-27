@@ -24,7 +24,7 @@ public class FetchMoviesTask extends AsyncTask<String, Void, PopularMovies[]> {
 
     private MovieGridFragment movieGridFragment;
     private final String LOG_TAG = FetchMoviesTask.class.getSimpleName();
-    private final String API_KEY = "my_apy_key"; //removed per instructions in the guide
+    private final String API_KEY = "554026709f5fd02040f0d9060089835b"; //removed per instructions in the guide
 
     public FetchMoviesTask(MovieGridFragment movieGridFragment) {
         this.movieGridFragment = movieGridFragment;
@@ -196,7 +196,7 @@ public class FetchMoviesTask extends AsyncTask<String, Void, PopularMovies[]> {
 
             id = movie.getString(TMDB_MOVIE_ID);
             title = movie.getString(TMDB_ORIGINAL_TITLE);
-            summary = movie.getString(TMDB_SUMMARY);
+            summary = movie.getString(TMDB_SUMMARY) == null ? "" : movie.getString(TMDB_SUMMARY);
             poster_path = movie.getString(TMDB_POSTER_PATH);
             release_date = movie.getString(TMDB_RELEASE_DATE);
             vote_average = movie.getString(TMDB_VOTE_AVERAGE);

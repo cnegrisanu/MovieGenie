@@ -59,14 +59,14 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:paddingTop="10dp">
-                        <TextView
-                            android:id="@+id/detailsReleaseDateLabel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/details_release_date_label"
-                            android:textSize="@dimen/abc_text_size_small_material"
-                            android:textStyle="bold"
-                            android:paddingRight="2dp" />
+                            <TextView
+                                android:id="@+id/detailsReleaseDateLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/details_release_date_label"
+                                android:textSize="@dimen/abc_text_size_small_material"
+                                android:textStyle="bold"
+                                android:paddingRight="2dp" />
                             <TextView
                                 android:id="@+id/detailsReleaseDate"
                                 android:layout_width="wrap_content"
@@ -150,14 +150,13 @@
                 android:text="@string/reviews_trailers_label"
                 android:id="@+id/reviews_trailers_label"
                 android:textStyle="bold"
-                android:layout_gravity="left"
                 android:outlineProvider="bounds"
                 android:paddingBottom="20dp"
                 android:paddingTop="10dp" />
 
             <ListView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
                 android:id="@+id/movie_extras_view"
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="1" />
