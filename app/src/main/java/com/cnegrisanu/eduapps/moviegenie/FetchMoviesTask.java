@@ -19,12 +19,13 @@ import java.net.URL;
 
 /**
  * Created by vollulin on 9/27/2015.
+ * Movie Genie App for the Udacity Android Nanodegree Course
  */
-public class FetchMoviesTask extends AsyncTask<String, Void, PopularMovies[]> {
+class FetchMoviesTask extends AsyncTask<String, Void, PopularMovies[]> {
 
     private MovieGridFragment movieGridFragment;
     private final String LOG_TAG = FetchMoviesTask.class.getSimpleName();
-    private final String API_KEY = "554026709f5fd02040f0d9060089835b"; //removed per instructions in the guide
+    private final String API_KEY = "apikey"; //removed per instructions in the guide
 
     public FetchMoviesTask(MovieGridFragment movieGridFragment) {
         this.movieGridFragment = movieGridFragment;
@@ -171,7 +172,7 @@ public class FetchMoviesTask extends AsyncTask<String, Void, PopularMovies[]> {
         final String TMDB_POSTER_PATH = "poster_path";
         final String TMDB_RELEASE_DATE = "release_date";
         final String TMDB_VOTE_AVERAGE = "vote_average";
-        final String TMDB_FAVORITE = "favorite";
+//        final String TMDB_FAVORITE = "favorite";
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(movieGridFragment.getActivity());
 

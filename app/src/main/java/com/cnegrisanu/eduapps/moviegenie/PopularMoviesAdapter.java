@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 
 import com.squareup.picasso.Picasso;
 
@@ -15,8 +14,9 @@ import java.util.List;
 
 /**
  * Created by Cristian on 7/12/2015.
+ * Movie Genie App for the Udacity Android Nanodegree Course
  */
-public class PopularMoviesAdapter extends ArrayAdapter<PopularMovies> {
+class PopularMoviesAdapter extends ArrayAdapter<PopularMovies> {
 
     private final String LOG_TAG = PopularMoviesAdapter.class.getSimpleName();
 

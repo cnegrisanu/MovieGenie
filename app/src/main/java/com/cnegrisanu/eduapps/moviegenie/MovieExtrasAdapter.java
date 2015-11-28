@@ -11,8 +11,9 @@ import java.util.List;
 
 /**
  * Created by vollulin on 10/4/2015.
+ * Movie Genie App for the Udacity Android Nanodegree Course
  */
-public class MovieExtrasAdapter extends ArrayAdapter<MovieExtras> {
+class MovieExtrasAdapter extends ArrayAdapter<MovieExtras> {
     private final String LOG_TAG = PopularMoviesAdapter.class.getSimpleName();
 
     /**

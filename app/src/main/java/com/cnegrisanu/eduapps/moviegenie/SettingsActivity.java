@@ -5,6 +5,7 @@ import android.preference.PreferenceActivity;
 
 /**
  * Created by vollulin on 7/12/2015.
+ * Movie Genie App for the Udacity Android Nanodegree Course
  */
 public class SettingsActivity extends PreferenceActivity {
     @Override

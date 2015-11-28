@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 /**
  * Created by vollulin on 10/4/2015.
+ * Movie Genie App for the Udacity Android Nanodegree Course
  */
 public class MovieExtras implements Parcelable {
 
@@ -18,7 +19,7 @@ public class MovieExtras implements Parcelable {
         this.value = value;
     }
 
-    protected MovieExtras(Parcel in) {
+    private MovieExtras(Parcel in) {
         type = in.readString();
         key = in.readString();
 

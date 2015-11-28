@@ -1,29 +1,22 @@
 package com.cnegrisanu.eduapps.moviegenie;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.logging.Logger;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -37,8 +30,8 @@ public class DetailActivityFragment extends Fragment {
     static final String MOVIE_DETAILS_DATA = "movieDetailsBundle";
 
     String id = "";
-    PopularMovies movie;
-    protected MovieExtrasAdapter mMovieExtrasAdapter;
+    private PopularMovies movie;
+    MovieExtrasAdapter mMovieExtrasAdapter;
     private ArrayList<MovieExtras> mMovieExtrasList;
 
     public DetailActivityFragment() {
@@ -50,7 +43,7 @@ public class DetailActivityFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
         final ToggleButton favoriteToggle = (ToggleButton) rootView.findViewById(R.id.favoriteToggle);
-        final ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(getActivity(), "favorites", Context.MODE_PRIVATE);
+        final ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(getActivity(), "favorites");
 
         ListView movieExtrasView = (ListView) rootView.findViewById(R.id.movie_extras_view);
 
@@ -59,7 +52,7 @@ public class DetailActivityFragment extends Fragment {
             mBundle = this.getArguments();
         } else {
 
-            // The detail Activity called via intent.  Inspect the intent for forecast data.
+            // The detail Activity called via intent.  Inspect the intent for data.
             Intent intent = getActivity().getIntent();
 
             if (intent != null && intent.hasExtra(MOVIE_DETAILS_DATA)) {
@@ -96,7 +89,7 @@ public class DetailActivityFragment extends Fragment {
             extrasTask.execute(movie.id);
         }
 
-        mMovieExtrasList = new ArrayList<MovieExtras>();
+        mMovieExtrasList = new ArrayList<>();
         mMovieExtrasAdapter = new MovieExtrasAdapter(getActivity(), mMovieExtrasList);
 
         mMovieExtrasAdapter.addAll(mMovieExtrasList);
@@ -117,7 +110,7 @@ public class DetailActivityFragment extends Fragment {
             }
         });
 
-        final SharedPreferences.Editor prefsEditor = PreferenceManager.getDefaultSharedPreferences(getActivity()).edit();
+//        final SharedPreferences.Editor prefsEditor = PreferenceManager.getDefaultSharedPreferences(getActivity()).edit();
 
         favoriteToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 

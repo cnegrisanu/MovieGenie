@@ -1,12 +1,8 @@
 package com.cnegrisanu.eduapps.moviegenie;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -31,7 +27,7 @@ public class MovieGridFragment extends Fragment {
     private static String sSortOrder = "";
     private final String LOG_TAG = MovieGridFragment.class.getSimpleName();
 
-    protected PopularMoviesAdapter mMovieAdapter;
+    PopularMoviesAdapter mMovieAdapter;
     private ArrayList<PopularMovies> mMoviesList;
 
     /**
@@ -50,20 +46,11 @@ public class MovieGridFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.v(LOG_TAG,"onActivityCreated() Called");
+        Log.v(LOG_TAG, "onActivityCreated() Called");
 
     }
 
-    /**
-     * Called when a fragment is first attached to its activity.
-     * {@link #onCreate(Bundle)} will be called after this.
-     *
-     * @param activity
-     */
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-    }
+
 
     /**
      * Called to do initial creation of a fragment.  This is called after
@@ -142,7 +129,7 @@ public class MovieGridFragment extends Fragment {
                             getActivity(), // The current context (this activity)
                             mMoviesList);
         } else {
-            mMoviesList = new ArrayList<PopularMovies>();
+            mMoviesList = new ArrayList<>();
             mMovieAdapter =
                     new PopularMoviesAdapter(
                             getActivity(), // The current context (this activity)
@@ -165,23 +152,6 @@ public class MovieGridFragment extends Fragment {
                 if (movieData != null) {
                     ((Callback) getActivity()).onItemSelected(movieData);
                 }
-
-//                Intent intent = new Intent(getActivity(), DetailActivity.class);
-//                Bundle movieDetail = new Bundle();
-//                movieDetail.putParcelable("movieDetails", movieData);
-//
-//                intent.putExtra("movieDetailsBundle", movieDetail);
-
-
-//                intent.putExtra("ID", movieData.id);
-//                intent.putExtra("TITLE", movieData.title);
-//                intent.putExtra("SUMMARY", movieData.summary);
-//                intent.putExtra("POSTER_PATH", movieData.poster_path);
-//                intent.putExtra("RELEASE_DATE", movieData.release_date);
-//                intent.putExtra("VOTE_AVERAGE", movieData.vote_average);
-//                intent.putExtra("FAVORITE",movieData.favorite);
-
-//                startActivity(intent);
             }
         });
         return rootView;
@@ -220,13 +190,12 @@ public class MovieGridFragment extends Fragment {
 
     private ArrayList<PopularMovies> getFavorites(){
         Gson GSON = new Gson();
-        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(getActivity(),"favorites", Context.MODE_PRIVATE);
+        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(getActivity(), "favorites");
         Map<String,?> favoriteMoviesList  = complexPreferences.getAll();
 
         ArrayList<PopularMovies> list = new ArrayList<>();
-        String json = "";
         for(Map.Entry<String,?> key : favoriteMoviesList.entrySet()) {
-            json = (String)key.getValue();
+            String json = (String)key.getValue();
             list.add(GSON.fromJson(json,PopularMovies.class));
         }
         return list;
@@ -241,6 +210,6 @@ public class MovieGridFragment extends Fragment {
         /**
          * DetailFragmentCallback for when an item has been selected.
          */
-        public void onItemSelected(PopularMovies movie);
+        void onItemSelected(PopularMovies movie);
     }
 }

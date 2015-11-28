@@ -14,7 +14,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 * */
-import android.content.Context;
 import java.lang.reflect.Type;
 import java.util.Map;
 
@@ -41,14 +40,15 @@ public class ComplexPreferences {
         }
         preferences = context.getSharedPreferences(namePreferences, mode);
         editor = preferences.edit();
+        editor.apply();
     }
 
     public static ComplexPreferences getComplexPreferences(Context context,
-                                                           String namePreferences, int mode) {
+                                                           String namePreferences) {
 
         if (complexPreferences == null) {
             complexPreferences = new ComplexPreferences(context,
-                    namePreferences, mode);
+                    namePreferences, Context.MODE_PRIVATE);
         }
 
         return complexPreferences;
@@ -59,7 +59,7 @@ public class ComplexPreferences {
             throw new IllegalArgumentException("object is null");
         }
 
-        if(key.equals("") || key == null){
+        if(key.equals("")){
             throw new IllegalArgumentException("key is empty or null");
         }
 
@@ -72,7 +72,7 @@ public class ComplexPreferences {
 
     public void remove(String key) {
 
-        if(key.equals("") || key == null){
+        if(key.equals("")){
             throw new IllegalArgumentException("key is empty or null");
         }
 

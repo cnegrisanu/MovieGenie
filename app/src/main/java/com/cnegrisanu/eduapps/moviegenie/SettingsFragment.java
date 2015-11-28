@@ -1,6 +1,5 @@
 package com.cnegrisanu.eduapps.moviegenie;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -10,6 +9,7 @@ import android.widget.Toast;
 
 /**
  * Created by Cristian on 7/12/2015.
+ * Movie Genie App for the Udacity Android Nanodegree Course
  */
 public class SettingsFragment extends PreferenceFragment implements Preference.OnPreferenceChangeListener {
 
@@ -54,7 +54,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
      */
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
-        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(getActivity(),PREFERENCE_TYPE, Context.MODE_PRIVATE);
+        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(getActivity(),PREFERENCE_TYPE);
         String stringValue = newValue.toString();
 
         if(stringValue.equalsIgnoreCase(PREFERENCE_TYPE) && complexPreferences.getAll().size() == 0) {

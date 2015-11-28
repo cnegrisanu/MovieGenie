@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 /**
  * Created by Cristian on 7/12/2015.
+ * Movie Genie App for the Udacity Android Nanodegree Course
  */
 public class PopularMovies implements Parcelable{
     String id;
@@ -24,7 +25,7 @@ public class PopularMovies implements Parcelable{
         this.vote_average = vote_average;
     }
 
-    protected PopularMovies(Parcel in) {
+    PopularMovies(Parcel in) {
         id = in.readString();
         title = in.readString();
         summary = in.readString();

@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity implements MovieGridFragment
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        PreferenceManager.setDefaultValues(this,R.xml.preferences,false);
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         if (findViewById(R.id.fragment_details_container) != null) {
             mTwoPane = true;
@@ -55,6 +55,17 @@ public class MainActivity extends AppCompatActivity implements MovieGridFragment
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * This is the fragment-orientated version of {@link #onResume()} that you
+     * can override to perform operations in the Activity at the same point
+     * where its fragments are resumed.  Be sure to always call through to
+     * the super-class.
+     */
+    @Override
+    protected void onResumeFragments() {
+        super.onResumeFragments();
     }
 
     @Override

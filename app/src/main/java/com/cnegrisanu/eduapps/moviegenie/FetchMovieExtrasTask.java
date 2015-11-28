@@ -1,9 +1,7 @@
 package com.cnegrisanu.eduapps.moviegenie;
 
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -17,16 +15,17 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Map;
 
 /**
  * Created by vollulin on 10/4/2015.
+ * Movie Genie App for the Udacity Android Nanodegree Course
  */
-public class FetchMovieExtrasTask extends AsyncTask<String,Void,ArrayList<MovieExtras>> {
+@SuppressWarnings("FieldCanBeLocal")
+class FetchMovieExtrasTask extends AsyncTask<String,Void,ArrayList<MovieExtras>> {
 
     private DetailActivityFragment movieDetailsFragment;
     private final String LOG_TAG = FetchMovieExtrasTask.class.getSimpleName();
-    private final String API_KEY = "554026709f5fd02040f0d9060089835b"; //removed per instructions in the guide
+    private final String API_KEY = "apikey"; //removed per instructions in the guide
     private final String MOVIE_EXTRAS = "append_to_response";
     private final String REVIEWS_AND_TRAILERS = "trailers,reviews";
 
@@ -165,7 +164,7 @@ public class FetchMovieExtrasTask extends AsyncTask<String,Void,ArrayList<MovieE
     private ArrayList<MovieExtras> getMovieExtrasFromJson(String moviesExtrasJsonStr) throws JSONException {
 
         // These are the names of the JSON objects that need to be extracted.
-        final String TMDB_MOVIE_ID = "id";
+//        final String TMDB_MOVIE_ID = "id";
         final String TMDB_RESULTS = "results";
         final String TMDB_MOVIE_TRAILERS = "trailers";
         final String TMDB_MOVIE_YOUTUBE_TRAILERS = "youtube";
@@ -185,7 +184,7 @@ public class FetchMovieExtrasTask extends AsyncTask<String,Void,ArrayList<MovieE
 
 
 //        MovieExtras[] moviesDataArray = new MovieExtras[movieTrailersArray.length() + movieReviewsArray.length()];
-        ArrayList<MovieExtras> mDA = new ArrayList<MovieExtras>();
+        ArrayList<MovieExtras> mDA = new ArrayList<>();
 
         for (int i = 0; i < movieTrailersArray.length(); i++) {
 

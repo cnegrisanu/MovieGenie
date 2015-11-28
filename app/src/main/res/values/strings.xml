@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">MovieGenie</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="details_summary_label">Plot:</string>
     <string name="details_release_date_label">Released:</string>
@@ -13,7 +12,6 @@
     <string name="preference_sort_order_key" translatable="false">sortOrder</string>
     <string name="preference_title">Sort movies</string>
     <string name="defaultSortValue">popularity.desc</string>
-    <string name="sortValue1">Highest rated</string>
     <string name="title_activity_settings">Settings</string>
 
 
@@ -32,5 +30,7 @@
     <!-->Toast strings </!-->
     <string name="toast_alert_no_favorites">No favorite movies selected!</string>
     <string name="reviews_trailers_label">TRAILERS AND REVIEWS</string>
+
+    <string name="movie_thumbnail">Movie thumbnail</string>
 
 </resources>
