@@ -101,12 +101,14 @@ public class DetailActivityFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 MovieExtras movieData = mMovieExtrasAdapter.getItem(position);
-                Intent intent = new Intent(Intent.ACTION_VIEW,
-                        Uri.parse("http://www.youtube.com/v/"
+                if (movieData.type == "trailer") {
+                    Intent intent = new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("http://www.youtube.com/v/"
 //                        Uri.parse("vnd.youtube:"
-                                + movieData.key));
+                                    + movieData.key));
 
-                startActivity(intent);
+                    startActivity(intent);
+                }
             }
         });
 
